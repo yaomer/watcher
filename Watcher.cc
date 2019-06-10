@@ -28,6 +28,7 @@ void Watcher::setDate()
 {
     char buf[32];
     Manager::timeStr(buf, sizeof(buf));
+    _date.clear();
     _date.append(buf);
 }
 
@@ -108,7 +109,7 @@ void Watcher::autoFlush()
     struct tm tm;
     time_t seconds = Manager::now();
     localtime_r(&seconds, &tm);
-    if (tm.tm_hour >= 24) {
+    if (tm.tm_hour >= 23) {
         if (!_flush) {
             _flush = true;
             flush();
