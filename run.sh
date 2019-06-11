@@ -9,8 +9,14 @@ else
     echo "Unknown Platform"
     exit 1
 fi
+
+# 这里的python版本没有限制，python2 or python3皆可
+# 它只用于在C/C++中嵌入python
+Python="python"
 CXXFLAGS="-std=c++11 -o wcr"
 SRC="*.cc"
+INCLUDE="-I /usr/include/$Python"
+LIB="-l$Python"
 
-echo "$CXX $CXXFLAGS $SRC"
-$CXX $CXXFLAGS $SRC
+echo "$CXX $CXXFLAGS $SRC $INCLUDE $LIB"
+$CXX $CXXFLAGS $SRC $INCLUDE $LIB

@@ -1,3 +1,4 @@
+#include <python3.7/Python.h>
 #include <sys/time.h>
 #include <unistd.h>
 #include <errno.h>
@@ -11,7 +12,7 @@
 #include "Manager.h"
 
 // 配置文件
-const char *Watcher::confFile = "./mac.conf";
+const char *Watcher::confFile = "./watch.conf";
 // ping.sh产生的中间文件
 const char *Watcher::macFile = "./mac.txt";
 // 存储监测数据
@@ -22,6 +23,14 @@ Watcher::Watcher()
     readConf();
     setDate();
     initResFile();
+    // 开启python(run.sh/$Python)解释器
+    Py_Initialize();
+}
+
+Watcher::~Watcher()
+{
+    // 关闭python解释器
+    Py_Finalize();
 }
 
 void Watcher::setDate()
@@ -102,6 +111,7 @@ void Watcher::flush()
         s.clear();
     }
     setDate();
+    updateWeekDays();
 }
 
 void Watcher::autoFlush()
@@ -114,12 +124,13 @@ void Watcher::autoFlush()
             _flush = true;
             flush();
             reReadConf();
+            visual();
         }
     } else
         _flush = false;
 }
 
-// 读取配置文件mac.conf
+// 读取配置文件watch.conf
 void Watcher::readConf()
 {
     std::ifstream ifs(confFile, std::ios::in);
@@ -152,4 +163,14 @@ void Watcher::initResFile()
     std::ofstream ofs(resFile, std::ios::app);
     std::string s("date, name, time");
     ofs.write(s.c_str(), s.size());
+}
+
+void Watcher::visual()
+{
+    if (_weekDays >= 7) {
+        PyRun_SimpleString("import os");
+        // 必须使用python3执行visual.py
+        PyRun_SimpleString("os.system('python3 ./visual.py')");
+        _weekDays = 0;
+    }
 }

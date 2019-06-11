@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime as dt
+import sys
 
 # 统计人数
 users = len(open("./.mac.conf", "r").readlines())
@@ -33,6 +35,9 @@ for it in week_days:
     dic.setdefault(it, time_list[i])
     i += 1
 
+# 得到图片名字
+png = dt.datetime.now().strftime('%Y-%m-%d') + ".png"
+
 # 绘图
 df = pd.DataFrame(dic, index=name)
 df.plot.barh(stacked=True)
@@ -40,4 +45,10 @@ title = "XiyouLinux: " + " ～ ".join(date)
 plt.title(title)
 plt.ylabel('姓名', fontsize=14)
 plt.xlabel('时间', fontsize=14)
-plt.show()
+
+# 导出为png
+plt.savefig(png)
+
+# 默认不显示图片，这样会阻塞后台程序
+if len(sys.argv) > 1:
+    plt.show()
