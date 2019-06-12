@@ -12,8 +12,8 @@ plt.rcParams['font.sans-serif']=['KaiTi']
 
 # 过滤数据
 csv = pd.read_csv("./.res.csv")
-date = csv.iloc[[0, -1], 0]
 start = -1 - this_week_lines
+date = csv.iloc[[start, -1], 0]
 name = csv.iloc[start:start + users, 1].tolist()
 time = csv.iloc[start:-1, 2].tolist()
 
