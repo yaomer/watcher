@@ -13,7 +13,7 @@
 
 // 配置文件
 const char *Watcher::confFile = "./watch.conf";
-// ping.sh产生的中间文件
+// scan.sh产生的中间文件
 const char *Watcher::macFile = "./mac.txt";
 // 存储监测数据
 const char *Watcher::resFile = "./res.csv";
@@ -65,7 +65,7 @@ bool Watcher::findMacAddr(std::string& s)
 
 void Watcher::find()
 {
-    system("./ping.sh");
+    system("./scan.sh");
     getMacAddrs();
 }
 
