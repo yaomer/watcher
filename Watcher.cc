@@ -1,4 +1,4 @@
-#include <python3.7/Python.h>
+#include <python2.7/Python.h>
 #include <sys/time.h>
 #include <unistd.h>
 #include <errno.h>
@@ -99,13 +99,13 @@ void Watcher::flush()
     char buf[32];
 
     for (auto& it : _table) {
-        snprintf(buf, sizeof(buf), "%.3g", it.timeOfDay() * 1.0 / 60);
+        snprintf(buf, sizeof(buf), "%.3g", it.timeOfDay() * 1.0 / 3600);
         it.initTimeOfDay();
+        s += _date;
+        s += ", ";
         s += it.name();
         s += ", ";
         s += buf;
-        s += ", ";
-        s += _date;
         s += "\n";
         ofs.write(s.c_str(), s.size());
         s.clear();
@@ -119,15 +119,17 @@ void Watcher::autoFlush()
     struct tm tm;
     time_t seconds = Manager::now();
     localtime_r(&seconds, &tm);
-    if (tm.tm_hour >= 23) {
-        if (!_flush) {
+    if (!_flush) {
+        if (tm.tm_hour >= 23) {
             _flush = true;
             flush();
             reReadConf();
             visual();
         }
-    } else
-        _flush = false;
+    } else {
+        if (tm.tm_hour < 23)
+            _flush = false;
+    }
 }
 
 // 读取配置文件watch.conf
@@ -161,7 +163,7 @@ void Watcher::initResFile()
     std::ifstream ifs(resFile, std::ios::in);
     if (ifs) return;
     std::ofstream ofs(resFile, std::ios::app);
-    std::string s("date, name, time");
+    std::string s("date, name, time\n");
     ofs.write(s.c_str(), s.size());
 }
 

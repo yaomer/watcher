@@ -7,12 +7,18 @@ import sys
 users = len(open("./watch.conf", "r").readlines())
 this_week_lines = users * 7
 
+# 验证数据
+reslines = len(open("./res.csv", "r").readlines())
+if reslines < this_week_lines:
+    print("no enough data")
+    exit(1)
+
 # 正常显示中文
 plt.rcParams['font.sans-serif']=['KaiTi']
 
 # 过滤数据
 csv = pd.read_csv("./res.csv")
-start = -1 - this_week_lines
+start = - this_week_lines
 date = csv.iloc[[start, -1], 0]
 name = csv.iloc[start:start + users, 1].tolist()
 time = csv.iloc[start:-1, 2].tolist()

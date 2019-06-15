@@ -8,5 +8,7 @@ int main()
     while (true) {
         wcr.find();
         wcr.watch();
+        wcr.flush();
+        break;
     }
 }
