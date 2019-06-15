@@ -7,7 +7,7 @@ time_t Manager::now()
 {
     struct timeval tv;
     gettimeofday(&tv, nullptr);
-    return tv.tv_sec + tv.tv_usec / 1000000;
+    return tv.tv_sec;
 }
 
 // len >= 11

@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <iostream>
 #include "Watcher.h"
 
 int main()
@@ -7,6 +8,5 @@ int main()
     while (true) {
         wcr.find();
         wcr.watch();
-        sleep(30);
     }
 }

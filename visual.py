@@ -4,14 +4,14 @@ import datetime as dt
 import sys
 
 # 统计人数
-users = len(open("./.mac.conf", "r").readlines())
+users = len(open("./watch.conf", "r").readlines())
 this_week_lines = users * 7
 
 # 正常显示中文
 plt.rcParams['font.sans-serif']=['KaiTi']
 
 # 过滤数据
-csv = pd.read_csv("./.res.csv")
+csv = pd.read_csv("./res.csv")
 start = -1 - this_week_lines
 date = csv.iloc[[start, -1], 0]
 name = csv.iloc[start:start + users, 1].tolist()
