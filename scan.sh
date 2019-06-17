@@ -9,7 +9,7 @@ while [ $SCAN_TIMES -ge 0 ]
 do
     echo -ne "\033[31mSCANING ... $SCAN_TIMES\033[0m\r"
     echo -ne "\033[?25l"
-    arp-scan -l | grep "^[0-9][0-9][0-9][.]" >> "$TMPFILE"
+    arp-scan -l | grep '^\d\{1,3\}[.]' >> "$TMPFILE"
     ((SCAN_TIMES--))
 done
 echo ""
